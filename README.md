@@ -1,40 +1,29 @@
-# create-svelte
+# NFT Generator
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Generate NFT style image variations from components, fully in browser powered by Svelte, JSZip, file-saver and HTML5 canvas.
 
-## Creating a project
+## Using
 
-If you're seeing this, you've probably already done this step. Congrats!
+Simply select the folder with your component subfolders, layers are alphabetically sorted by folder names.
 
-```bash
-# create a new project in the current directory
-npm init svelte@next
+### Hosted Version
+TODO: Add Link
 
-# create a new project in my-app
-npm init svelte@next my-app
-```
+### Locally Hosted
 
-> Note: the `@next` is temporary
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+To run a local development instance:
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
+git clone https://github.com/edde746/nft-gen.git
+cd nft-gen
+npm install
 npm run dev -- --open
 ```
 
 ## Building
 
-To create a production version of your app:
+To create a production version:
 
 ```bash
 npm run build
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment.
