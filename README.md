@@ -7,7 +7,7 @@ Generate NFT style image variations from components, fully in browser powered by
 Simply select the folder with your component subfolders, layers are alphabetically sorted by folder names.
 
 ### Hosted Version
-TODO: Add Link
+https://edde746.github.io/nft-gen
 
 ### Locally Hosted
 
