@@ -1,7 +1,12 @@
 <script>
-  import JSZip from "jszip";
+  let downloadZip;
+  import { onMount } from "svelte";
   import { saveAs } from "file-saver";
   import { v4 } from "uuid";
+
+  onMount(async () => {
+    downloadZip = (await import("client-zip")).downloadZip;
+  });
 
   let renderer;
   let layers = {};
@@ -65,6 +70,11 @@
         type="file"
         webkitdirectory
         on:change={(e) => {
+          // Reset
+          layers = {};
+          progress = 0;
+          resolutionSet = false;
+
           // Loop over files from the folder and sort them into the layers
           [...e.target.files].forEach((file) => {
             const path = file.webkitRelativePath.split("/").slice(1).join("/");
@@ -74,7 +84,6 @@
             layers[folder] = layers.hasOwnProperty(folder) ? [...layers[folder], file] : [file];
           });
           layers = sortObject(layers);
-          resolutionSet = false;
         }}
       />
       {Object.keys(layers).length ? "✅ Selected" : "Select Folder"}
@@ -82,21 +91,25 @@
     <button
       class="btn bg-sky-100 text-sky-700 hover:bg-sky-200"
       on:click={async () => {
-        var zip = new JSZip();
+        var zip = [];
 
         // Loop over all possible combinations
         const possibilities = [...cartesian(...Object.values(layers).filter((l) => l))];
         for (let i in possibilities) {
           progress = i / possibilities.length;
           await generateImage(possibilities[i]);
-          let data = renderer.toDataURL();
-          zip.file(`${v4()}.png`, data.substr(data.indexOf(",") + 1), { base64: true });
+          const blob = await new Promise((resolve) => {
+            renderer.toBlob((blob) => {
+              resolve(blob);
+            });
+          });
+
+          zip.push({ name: `${v4()}.png`, input: blob });
         }
 
-        zip.generateAsync({ type: "blob" }).then((content) => {
-          saveAs(content, `${v4()}.zip`);
-          progress = 2;
-        });
+        saveAs(await downloadZip(zip).blob(), `${v4()}.zip`);
+        layers = {};
+        progress = 2;
       }}>Generate</button
     >
   </div>
@@ -120,7 +133,9 @@
       <div class="bg-sky-200 rounded-md w-24 h-16 p-1 -ml-4">2-body/</div>
       <div class="bg-sky-300 rounded-md w-24 h-16 p-1 -ml-4">3-face/</div>
     </div>
-    <a class="btn bg-sky-100 text-sky-700 hover:bg-sky-200 inline-block" href="example.zip" rel="external">Download Example</a>
+    <a class="btn bg-sky-100 text-sky-700 hover:bg-sky-200 inline-block" href="example.zip" rel="external"
+      >Download Example</a
+    >
   </div>
 
   <canvas bind:this={renderer} class="hidden" />

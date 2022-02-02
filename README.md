@@ -1,6 +1,6 @@
 # NFT Generator
 
-Generate NFT style image variations from components, fully in browser powered by Svelte, JSZip, file-saver and HTML5 canvas.
+Generate NFT style image variations from components, fully in browser powered by Svelte, client-zip, file-saver and HTML5 canvas.
 
 ## Using
 
