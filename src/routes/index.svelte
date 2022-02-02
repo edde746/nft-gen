@@ -6,6 +6,7 @@
   let renderer;
   let layers = {};
   let resolutionSet = false;
+  let progress = 0;
 
   // Generate image from array of files
   let generateImage = async (files) => {
@@ -84,19 +85,30 @@
         var zip = new JSZip();
 
         // Loop over all possible combinations
-        const possibilities = cartesian(...Object.values(layers).filter((l) => l));
-        for (let files of possibilities) {
-          await generateImage(files);
+        const possibilities = [...cartesian(...Object.values(layers).filter((l) => l))];
+        for (let i in possibilities) {
+          progress = i / possibilities.length;
+          await generateImage(possibilities[i]);
           let data = renderer.toDataURL();
           zip.file(`${v4()}.png`, data.substr(data.indexOf(",") + 1), { base64: true });
         }
 
         zip.generateAsync({ type: "blob" }).then((content) => {
           saveAs(content, `${v4()}.zip`);
+          progress = 2;
         });
       }}>Generate</button
     >
   </div>
+
+  {#if progress > 0 && progress < 1}
+    <div class="w-full bg-sky-100 rounded-full h-3">
+      <div
+        class={"bg-sky-300 h-3 rounded-full " + (progress > 0.95 ? "animate-pulse" : "")}
+        style={`width:${progress * 100}%`}
+      />
+    </div>
+  {/if}
 
   <div class="text-center">
     <h2 class="text-lg font-semibold text-zinc-600">How to use</h2>
