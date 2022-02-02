@@ -1,7 +1,5 @@
 import adapter from "@sveltejs/adapter-static";
 
-const dev = "production" === "development";
-
 /** @type {import(""@sveltejs/kit").Config} */
 const config = {
   kit: {
@@ -10,7 +8,7 @@ const config = {
       assets: "docs",
     }),
     paths: {
-      base: dev ? "" : "/nft-gen",
+      base: process.env.NODE_ENV === 'development' ? "" : "/nft-gen",
     },
   },
 };

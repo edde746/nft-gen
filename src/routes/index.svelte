@@ -115,11 +115,12 @@
     <p class="text-zinc-500 mb-4">
       Select a folder with a subfolder for each component layer,<br /> layer position is sorted by folder name, for example:
     </p>
-    <div class="flex justify-center">
+    <div class="flex justify-center mb-4">
       <div class="bg-sky-100 rounded-md w-24 h-16 p-1">1-bg/</div>
       <div class="bg-sky-200 rounded-md w-24 h-16 p-1 -ml-4">2-body/</div>
       <div class="bg-sky-300 rounded-md w-24 h-16 p-1 -ml-4">3-face/</div>
     </div>
+    <a class="btn bg-sky-100 text-sky-700 hover:bg-sky-200 inline-block" href="example.zip" rel="external">Download Example</a>
   </div>
 
   <canvas bind:this={renderer} class="hidden" />
